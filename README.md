@@ -10,6 +10,7 @@ Human Face Images are downloaded from [Kaggle](https://www.kaggle.com/datasets/a
 
 ### Cleaning the images
 
-removeBW.py: Remove Black and White (deleted: 641)
-removeRepeatImage.py: Remove repeated images (deleted: 3336)
+[removeBW.py](https://github.com/usmanklodhi/InfantVisionSimulator/blob/main/removeBW.py): Remove Black and White (deleted: 641)
+
+[removeRepeatImage.py](https://github.com/usmanklodhi/InfantVisionSimulator/blob/main/removeRepeatImage.py): Remove repeated images (deleted: 3336)
 
