@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import math
+import os
 
 
-def plot_images(images, batch_idx, age_in_months, applied_transforms=None, dataset_name=None):
+def save_images(images, batch_idx, age_in_months, save_dir="output_images", applied_transforms=None, dataset_name=None):
     """Helper function to plot images in a grid with age and optional transformations or dataset name."""
+    os.makedirs(save_dir, exist_ok=True)
+    
     num_images = len(images)
     cols = 6
     rows = math.ceil(num_images / cols)
@@ -31,5 +34,8 @@ def plot_images(images, batch_idx, age_in_months, applied_transforms=None, datas
             ax = axes[i // cols, i % cols] if rows > 1 else axes[i % cols]
             ax.axis('off')  # Turn off empty subplots
 
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
-    plt.show()
+    # Save the plot as an image file
+    file_path = os.path.join(save_dir, f"batch_{batch_idx}_age_{age_in_months}.png")
+    plt.savefig(file_path, bbox_inches='tight')
+    plt.close(fig)  # Close the plot to avoid displaying it
+    print(f"Saved batch {batch_idx} at age {age_in_months} months to {file_path}")

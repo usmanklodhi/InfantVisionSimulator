@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 import math
 from dataset import ImageDataset  # Import your custom ImageDataset class
-from util.plot_utils import plot_images
+from util.plot_utils import save_images
 
 
 if __name__ == '__main__':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     ])
 
     # Test at different ages
-    for age in [0, 6, 12, 24, 36]:  # Testing for ages 0 months to 36 months
+    for age in [0, 6, 12, 24, 36]:  # Testing for ages 0 months to 16 months
         print(f"Testing for age {age} months")
 
         # Initialize the dataset with different ages
@@ -45,7 +45,8 @@ if __name__ == '__main__':
             print("Images:", images.shape)
 
             # Plot the images in the batch with age and transformations applied
-            plot_images(images, batch_idx, age_in_months=age, applied_transforms=', '.join(applied_transforms))
+            save_images(images, batch_idx, age_in_months=age, applied_transforms=', '.join(applied_transforms))
+
 
             # Break after the first batch for each age
             break
