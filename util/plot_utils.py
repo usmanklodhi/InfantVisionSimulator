@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import math
 
 
-
 def plot_images(images, batch_idx, age_in_months, applied_transforms=None, dataset_name=None):
     """Helper function to plot images in a grid with age and optional transformations or dataset name."""
     num_images = len(images)
