@@ -15,7 +15,7 @@ if __name__ == '__main__':
     ])
 
     # Test at different ages
-    for age in [0, 6, 12, 24, 36]:  # Testing for ages 0 months to 16 months
+    for age in [0, 2, 3, 6, 12]:  # Testing for ages 0 months to 16 months
         print(f"Testing for age {age} months")
 
         # Initialize the dataset with different ages
@@ -23,21 +23,24 @@ if __name__ == '__main__':
 
         # List of transformations based on age
         applied_transforms = []
-        if age == 0:
-            applied_transforms.append("Max Blur (High)")
+        if age <2:
+            applied_transforms.append("High Blur (Max Acuity)")
             applied_transforms.append("Grayscale")
-        elif age < 4:
+        elif age < 3:
             applied_transforms.append("Blur (High)")
-            applied_transforms.append("Grayscale")
-        elif age < 12:
+            applied_transforms.append("Grayscale + Red-Green Sensitivity")
+        elif age < 6:
             applied_transforms.append("Reduced Blur")
-            applied_transforms.append("Grayscale-Color Transition")
+            applied_transforms.append("Enhanced Red-Green Sensitivity")
+        elif age < 12:
+            applied_transforms.append("Minimal Blur")
+            applied_transforms.append("Red-Green + Blue-Yellow Sensitivity")
         else:
             applied_transforms.append("Minimal Blur")
             applied_transforms.append("Full Color")
 
         # Initialize the DataLoader
-        dataloader = DataLoader(dataset, batch_size=6, shuffle=True, num_workers=4)
+        dataloader = DataLoader(dataset, batch_size=6, shuffle=False, num_workers=4)
 
         # Get one batch of images
         for batch_idx, (images, _) in enumerate(dataloader):
@@ -46,7 +49,6 @@ if __name__ == '__main__':
 
             # Plot the images in the batch with age and transformations applied
             save_images(images, batch_idx, age_in_months=age, applied_transforms=', '.join(applied_transforms))
-
 
             # Break after the first batch for each age
             break
