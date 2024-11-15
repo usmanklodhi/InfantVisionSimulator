@@ -59,6 +59,8 @@ class ImageDataset(Dataset):
 
         # Color Perception (Grayscale to Color) based on age
         color_blend_ratio = self.calculate_color_blend_ratio()
+
+        # If full color, skip blending to save processing time
         if color_blend_ratio < 1:
             grayscale_image = ImageOps.grayscale(image).convert("RGB")
             if 2 <= self.age_in_months < 3:
@@ -78,13 +80,20 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path, label = os.path.join(self.img_dir, self.img_labels[idx][0]), self.img_labels[idx][1]
-        image = Image.open(img_path).convert("RGB")
+        try:
+            image = Image.open(img_path).convert("RGB")  # Ensure RGB mode for consistency
+        except Exception as e:
+            logging.error(f"Error loading image {img_path}: {e}")
+            return None, None
 
         # Apply age-based transformations
         image = self.apply_age_based_transformations(image)
 
-        # Apply any additional transforms
+        # Ensure final image shape consistency
         if self.transform:
             image = self.transform(image)
+        if image.shape[0] != 3:
+            logging.error(f"Inconsistent image channels for {img_path}")
+            return None, None
 
         return image, label
