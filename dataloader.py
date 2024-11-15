@@ -23,16 +23,16 @@ if __name__ == '__main__':
 
         # List of transformations based on age
         applied_transforms = []
-        if age <2:
+        if 0 <= age < 2:
             applied_transforms.append("High Blur (Max Acuity)")
             applied_transforms.append("Grayscale")
-        elif age < 3:
+        elif 2 <= age < 3:
             applied_transforms.append("Blur (High)")
             applied_transforms.append("Grayscale + Red-Green Sensitivity")
-        elif age < 6:
+        elif 3 <= age < 6:
             applied_transforms.append("Reduced Blur")
             applied_transforms.append("Enhanced Red-Green Sensitivity")
-        elif age < 12:
+        elif 6 <= age < 12:
             applied_transforms.append("Minimal Blur")
             applied_transforms.append("Red-Green + Blue-Yellow Sensitivity")
         else:
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             applied_transforms.append("Full Color")
 
         # Initialize the DataLoader
-        dataloader = DataLoader(dataset, batch_size=6, shuffle=False, num_workers=4)
+        dataloader = DataLoader(dataset, batch_size=6, shuffle=True, num_workers=4)
 
         # Get one batch of images
         for batch_idx, (images, _) in enumerate(dataloader):
