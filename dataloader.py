@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import DataLoader
 from torchvision import transforms
-import math
 from dataset import ImageDataset  # Import your custom ImageDataset class
 from util.plot_utils import save_images
 

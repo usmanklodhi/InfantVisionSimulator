@@ -1,7 +1,6 @@
 from torch.utils.data import Dataset
 from PIL import Image, ImageFilter, ImageOps
 import os
-import random
 import logging
 import numpy as np
 
@@ -18,9 +17,17 @@ class ImageDataset(Dataset):
     
     def calculate_blur_radius(self):
         """Calculate blur radius based on age to simulate visual acuity."""
-        max_blur = 15  # Max blur radius for very poor visual acuity (e.g., newborns)
-        acuity_scale = min(max(self.age_in_months / 12, 0), 1)  # Scale between 0 and 1
-        blur_radius = max_blur * (1 - acuity_scale)
+        # Visual acuity ranges for different ages according to research
+        if self.age_in_months < 2:
+            blur_radius = 15  # Very low acuity (20/600 or worse)
+        elif 2 <= self.age_in_months < 3:
+            blur_radius = 12  # High blur for 20/400 acuity
+        elif 3 <= self.age_in_months < 6:
+            blur_radius = 8   # Moderate blur for 20/200 acuity
+        elif 6 <= self.age_in_months < 12:
+            blur_radius = 4   # Lower blur for 20/100 acuity
+        else:
+            blur_radius = 1   # Near adult-like acuity (20/20) at 12+ months
         return blur_radius
     
     def calculate_color_blend_ratio(self):
@@ -38,25 +45,18 @@ class ImageDataset(Dataset):
             blend_ratio = 1  # Full color perception
         return blend_ratio
     
-    def apply_red_green_sensitivity(self, image, blend_ratio):
-        """Apply red-green sensitivity for ages 2-6 months."""
+    def apply_color_sensitivity(self, image, blend_ratio, filter_color):
+        """Apply color sensitivity based on age and specific color filter."""
         grayscale_image = ImageOps.grayscale(image).convert("RGB")
-        red_green_filter = Image.new("RGB", image.size, (200, 100, 100))
-        blended_image = Image.blend(grayscale_image, red_green_filter, blend_ratio)
-        return Image.blend(blended_image, image, blend_ratio)
-    
-    def apply_blue_yellow_sensitivity(self, image, blend_ratio):
-        """Add blue-yellow sensitivity for ages 6-12 months."""
-        grayscale_image = ImageOps.grayscale(image).convert("RGB")
-        blue_yellow_filter = Image.new("RGB", image.size, (200, 200, 150))
-        blended_image = Image.blend(grayscale_image, blue_yellow_filter, blend_ratio)
+        color_filter = Image.new("RGB", image.size, filter_color)
+        blended_image = Image.blend(grayscale_image, color_filter, blend_ratio)
         return Image.blend(blended_image, image, blend_ratio)
 
     def apply_age_based_transformations(self, image):
         # Mapping age in months to visual acuity (20/600 to 20/20) using a non-linear function
         blur_radius = self.calculate_blur_radius()
         image = image.filter(ImageFilter.GaussianBlur(blur_radius))
-
+        
         # Color Perception (Grayscale to Color) based on age
         color_blend_ratio = self.calculate_color_blend_ratio()
 
@@ -65,13 +65,13 @@ class ImageDataset(Dataset):
             grayscale_image = ImageOps.grayscale(image).convert("RGB")
             if 2 <= self.age_in_months < 3:
                 # Enhance reds and greens for ages 2-3 months
-                image = self.apply_red_green_sensitivity(image, color_blend_ratio)
+                image = self.apply_color_sensitivity(image, color_blend_ratio, (200, 100, 100))  # Red-green
             elif 3 <= self.age_in_months < 6:
                 # Increase red-green sensitivity with higher color saturation
-                image = self.apply_red_green_sensitivity(image, color_blend_ratio)
+                image = self.apply_color_sensitivity(image, color_blend_ratio, (200, 100, 100))  # Echanced Red-green
             elif 6 <= self.age_in_months < 12:
                 # Add sensitivity to blues and yellows in the transition phase
-                image = self.apply_blue_yellow_sensitivity(image, color_blend_ratio)
+                image = self.apply_color_sensitivity(image, color_blend_ratio, (200, 200, 150))  # Blue-yellow
             else:
                 # Full color for ages 12 months and up
                 image = Image.blend(grayscale_image, image, color_blend_ratio)
@@ -92,7 +92,7 @@ class ImageDataset(Dataset):
         # Ensure final image shape consistency
         if self.transform:
             image = self.transform(image)
-        if image.shape[0] != 3:
+        if image.size(0) != 3:  # Checking channels after transformation to tensor
             logging.error(f"Inconsistent image channels for {img_path}")
             return None, None
 
