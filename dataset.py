@@ -4,6 +4,8 @@ import os
 import logging
 import numpy as np
 
+# Configure logging to output to the console
+logging.basicConfig(level=logging.INFO)
 
 class ImageDataset(Dataset):
     def __init__(self, img_dir, transform=None, age_in_months=0):
@@ -59,6 +61,9 @@ class ImageDataset(Dataset):
         
         # Color Perception (Grayscale to Color) based on age
         color_blend_ratio = self.calculate_color_blend_ratio()
+        
+        # Log the calculated blur_radius and color_blend_ratio for debugging
+        logging.info(f"Age: {self.age_in_months} months | Blur Radius: {blur_radius} | Color Blend Ratio: {color_blend_ratio}")
 
         # If full color, skip blending to save processing time
         if color_blend_ratio < 1:
