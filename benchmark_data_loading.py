@@ -1,9 +1,8 @@
 import time
 import matplotlib.pyplot as plt
-import math
 from torch.utils.data import DataLoader
 from torchvision import transforms
-from dataset import ImageDataset  # Import your existing dataset class
+from dataset import ImageDataset  # Import existing dataset class
 from util.plot_utils import plot_images
 
 # Define a dummy transformation dataset without age-based modifications

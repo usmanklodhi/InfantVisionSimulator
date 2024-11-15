@@ -8,11 +8,15 @@ import numpy as np
 logging.basicConfig(level=logging.INFO)
 
 class ImageDataset(Dataset):
-    def __init__(self, img_dir, transform=None, age_in_months=0):
+    def __init__(self, img_dir, transform=None, age_in_months=0, verbose=False, apply_transform=True):
+        
         self.img_dir = img_dir
         self.transform = transform
         self.img_labels = [(file, 1) for file in os.listdir(img_dir) if file.endswith(('.jpg', '.jpeg', '.png'))]
         self.age_in_months = age_in_months
+        self.verbose = verbose  # Control logging
+        self.apply_transform = apply_transform  # Control whether transformations are applied
+
 
     def __len__(self):
         return len(self.img_labels)
@@ -56,6 +60,9 @@ class ImageDataset(Dataset):
 
     def apply_age_based_transformations(self, image):
         # Mapping age in months to visual acuity (20/600 to 20/20) using a non-linear function
+        if not self.apply_transform:
+            return image
+        
         blur_radius = self.calculate_blur_radius()
         image = image.filter(ImageFilter.GaussianBlur(blur_radius))
         
@@ -63,7 +70,8 @@ class ImageDataset(Dataset):
         color_blend_ratio = self.calculate_color_blend_ratio()
         
         # Log the calculated blur_radius and color_blend_ratio for debugging
-        logging.info(f"Age: {self.age_in_months} months | Blur Radius: {blur_radius} | Color Blend Ratio: {color_blend_ratio}")
+        if self.verbose:
+            logging.info(f"Age: {self.age_in_months} months | Blur Radius: {blur_radius} | Color Blend Ratio: {color_blend_ratio}")
 
         # If full color, skip blending to save processing time
         if color_blend_ratio < 1:
@@ -86,17 +94,27 @@ class ImageDataset(Dataset):
     def __getitem__(self, idx):
         img_path, label = os.path.join(self.img_dir, self.img_labels[idx][0]), self.img_labels[idx][1]
         try:
-            image = Image.open(img_path).convert("RGB")  # Ensure RGB mode for consistency
+            # Open the image
+            image = Image.open(img_path)
+            
+            # Handle palette-based images with transparency
+            if image.mode == "P" or image.mode == "RGBA":
+                image = image.convert("RGB")  # Convert to RGB format
+
+            # Ensure consistent color format
+            image = image.convert("RGB")  
         except Exception as e:
             logging.error(f"Error loading image {img_path}: {e}")
             return None, None
 
         # Apply age-based transformations
-        image = self.apply_age_based_transformations(image)
+        if self.apply_transform:
+            image = self.apply_age_based_transformations(image)
 
         # Ensure final image shape consistency
         if self.transform:
             image = self.transform(image)
+
         if image.size(0) != 3:  # Checking channels after transformation to tensor
             logging.error(f"Inconsistent image channels for {img_path}")
             return None, None
