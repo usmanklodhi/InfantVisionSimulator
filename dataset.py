@@ -37,6 +37,20 @@ class ImageDataset(Dataset):
         else:
             blend_ratio = 1  # Full color perception
         return blend_ratio
+    
+    def apply_red_green_sensitivity(self, image, blend_ratio):
+        """Apply red-green sensitivity for ages 2-6 months."""
+        grayscale_image = ImageOps.grayscale(image).convert("RGB")
+        red_green_filter = Image.new("RGB", image.size, (200, 100, 100))
+        blended_image = Image.blend(grayscale_image, red_green_filter, blend_ratio)
+        return Image.blend(blended_image, image, blend_ratio)
+    
+    def apply_blue_yellow_sensitivity(self, image, blend_ratio):
+        """Add blue-yellow sensitivity for ages 6-12 months."""
+        grayscale_image = ImageOps.grayscale(image).convert("RGB")
+        blue_yellow_filter = Image.new("RGB", image.size, (200, 200, 150))
+        blended_image = Image.blend(grayscale_image, blue_yellow_filter, blend_ratio)
+        return Image.blend(blended_image, image, blend_ratio)
 
     def apply_age_based_transformations(self, image):
         # Mapping age in months to visual acuity (20/600 to 20/20) using a non-linear function
@@ -49,19 +63,13 @@ class ImageDataset(Dataset):
             grayscale_image = ImageOps.grayscale(image).convert("RGB")
             if 2 <= self.age_in_months < 3:
                 # Enhance reds and greens for ages 2-3 months
-                red_green_filter = Image.new("RGB", image.size, (255, 100, 100))
-                blended_image = Image.blend(grayscale_image, red_green_filter, color_blend_ratio)
-                image = Image.blend(blended_image, image, color_blend_ratio)
+                image = self.apply_red_green_sensitivity(image, color_blend_ratio)
             elif 3 <= self.age_in_months < 6:
                 # Increase red-green sensitivity with higher color saturation
-                red_green_filter = Image.new("RGB", image.size, (200, 100, 100))
-                blended_image = Image.blend(grayscale_image, red_green_filter, color_blend_ratio)
-                image = Image.blend(blended_image, image, color_blend_ratio)
+                image = self.apply_red_green_sensitivity(image, color_blend_ratio)
             elif 6 <= self.age_in_months < 12:
                 # Add sensitivity to blues and yellows in the transition phase
-                blue_yellow_filter = Image.new("RGB", image.size, (200, 200, 150))
-                blended_image = Image.blend(grayscale_image, blue_yellow_filter, color_blend_ratio)
-                image = Image.blend(blended_image, image, color_blend_ratio)
+                image = self.apply_blue_yellow_sensitivity(image, color_blend_ratio)
             else:
                 # Full color for ages 12 months and up
                 image = Image.blend(grayscale_image, image, color_blend_ratio)
