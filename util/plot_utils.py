@@ -3,8 +3,12 @@ import math
 import os
 
 
-def save_images(images, batch_idx, age_in_months, save_dir="output_images", applied_transforms=None, dataset_name=None):
-    """Helper function to plot images in a grid with age and optional transformations or dataset name."""
+def save_images(images, batch_idx, age_in_months, save_dir="output_images/Test_i_images", applied_transforms=None, dataset_name=None):
+    """
+    Save images from a batch directly as they are, without any additional modifications,
+    and store them in the specified directory.
+    """
+    
     os.makedirs(save_dir, exist_ok=True)
     
     num_images = len(images)
@@ -25,11 +29,10 @@ def save_images(images, batch_idx, age_in_months, save_dir="output_images", appl
     for i in range(rows * cols):
         if i < num_images:
             ax = axes[i // cols, i % cols] if rows > 1 else axes[i % cols]
-            img = images[i].permute(1, 2, 0).cpu()  # Move to (H, W, C) and detach from GPU if needed
+            img = images[i].permute(1, 2, 0).cpu().numpy()  # Move to (H, W, C) and detach from GPU if needed
 
-            # Apply grayscale colormap if conditions match
-            grayscale_condition = (dataset_name == "ImageDataset" if dataset_name else True) and age_in_months < 4
-            ax.imshow(img, cmap="gray" if grayscale_condition else None)
+            # Display the image as-is, no modifications
+            ax.imshow(img)
             ax.axis('off')  # Remove axes
         else:
             ax = axes[i // cols, i % cols] if rows > 1 else axes[i % cols]

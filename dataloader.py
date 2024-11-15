@@ -22,7 +22,7 @@ def main():
         logging.info(f"Testing transformations for age {age} months")
 
         # Initialize the dataset with specified age
-        dataset = ImageDataset(img_dir="dataset", transform=base_transform, age_in_months=age)
+        dataset = ImageDataset(img_dir="dataset/Test_image_6", transform=base_transform, age_in_months=age)
         
         # Define the transformations applied for each age group
         applied_transforms = get_applied_transforms(age)
