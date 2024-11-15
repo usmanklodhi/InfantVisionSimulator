@@ -18,8 +18,9 @@ def save_images(images, batch_idx, age_in_months, save_dir="output_images", appl
     if applied_transforms:
         title += f"\nTransforms: {applied_transforms}"
 
-    fig, axes = plt.subplots(rows, cols, figsize=(cols * 1.5, rows * 1.5))
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 1.5, rows * 1.5+1))
     fig.suptitle(title, fontsize=12)
+    plt.subplots_adjust(top=1)  # Adjusts the position
 
     for i in range(rows * cols):
         if i < num_images:

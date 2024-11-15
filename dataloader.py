@@ -1,53 +1,56 @@
-import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from dataset import ImageDataset  # Import your custom ImageDataset class
-from util.plot_utils import save_images
+from util.plot_utils import save_images  # Assumed to be a utility function for saving images
+import logging
 
+# Configure logging to output to the console
+logging.basicConfig(level=logging.INFO)
 
-if __name__ == '__main__':
-    # Define transformations for the dataset
+def main():
+    # Define basic transformation for resizing and converting to tensor
     base_transform = transforms.Compose([
         transforms.Resize((128, 128)),
         transforms.ToTensor()
     ])
 
-    # Test at different ages
-    for age in [0, 2, 3, 6, 12]:  # Testing for ages 0 months to 16 months
-        print(f"Testing for age {age} months")
+    # List of ages to test for transformations
+    test_ages = [0, 2, 3, 6, 12]
 
-        # Initialize the dataset with different ages
+    for age in test_ages:
+        logging.info(f"Testing transformations for age {age} months")
+
+        # Initialize the dataset with specified age
         dataset = ImageDataset(img_dir="dataset", transform=base_transform, age_in_months=age)
-
-        # List of transformations based on age
-        applied_transforms = []
-        if 0 <= age < 2:
-            applied_transforms.append("High Blur (Max Acuity)")
-            applied_transforms.append("Grayscale")
-        elif 2 <= age < 3:
-            applied_transforms.append("Blur (High)")
-            applied_transforms.append("Grayscale + Red-Green Sensitivity")
-        elif 3 <= age < 6:
-            applied_transforms.append("Reduced Blur")
-            applied_transforms.append("Enhanced Red-Green Sensitivity")
-        elif 6 <= age < 12:
-            applied_transforms.append("Minimal Blur")
-            applied_transforms.append("Red-Green + Blue-Yellow Sensitivity")
-        else:
-            applied_transforms.append("Minimal Blur")
-            applied_transforms.append("Full Color")
-
+        
+        # Define the transformations applied for each age group
+        applied_transforms = get_applied_transforms(age)
+        
         # Initialize the DataLoader
-        dataloader = DataLoader(dataset, batch_size=6, shuffle=True, num_workers=4)
+        dataloader = DataLoader(dataset, batch_size=6, shuffle=False, num_workers=4)
 
-        # Get one batch of images
+        # Load one batch and display/save images
         for batch_idx, (images, _) in enumerate(dataloader):
-            print("Batch:", batch_idx)
-            print("Images:", images.shape)
+            logging.info(f"Processing Batch {batch_idx} for age {age} months")
+            logging.info(f"Image batch shape: {images.shape}")
 
-            # Plot the images in the batch with age and transformations applied
+            # Save images with transformations for inspection
             save_images(images, batch_idx, age_in_months=age, applied_transforms=', '.join(applied_transforms))
+            break  # Process only the first batch for each age
 
-            # Break after the first batch for each age
-            break
+def get_applied_transforms(age):
+    """Determine the list of transformations based on the infant's age."""
+    if 0 <= age < 2:
+        return ["High Blur (Max Acuity)", "Grayscale"]
+    elif 2 <= age < 3:
+        return ["Blur (High)", "Grayscale + Red-Green Sensitivity"]
+    elif 3 <= age < 6:
+        return ["Reduced Blur", "Enhanced Red-Green Sensitivity"]
+    elif 6 <= age < 12:
+        return ["Minimal Blur", "Red-Green + Blue-Yellow Sensitivity"]
+    else:
+        return ["Minimal Blur", "Full Color"]
+
+if __name__ == '__main__':
+    main()
