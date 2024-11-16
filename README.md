@@ -56,11 +56,13 @@ InfantVisionSimulator/
 │   ├── visual_acuity.py      # Visual acuity transformation
 │   ├── color_perception.py   # Color perception transformation
 ├── scripts/
-│   ├── plot.py               # Script for visualizing transformations
-│   ├── test_dataloader.py    # Script for testing the dataloader
-├── output_images/            # Folder for storing output images
-├── README.md                 # Project documentation
-└── report.pdf                # Final report (to be added)
+│   ├── plot.py                # Script for visualizing transformations
+│   ├── test_dataloader.py     # Script for testing the dataloader
+│   ├── time_performance.py    # Script for time performance (100 images)
+│   ├── performance_metrics.py # Script for accuracy performance (100 images)
+├── output_images/             # Folder for storing output images
+├── README.md                  # Project documentation
+└── report.pdf                 # Final report (to be added)
 
 
 ```
@@ -102,10 +104,15 @@ To plot and save the transformed images for different ages:
 ```
 python scripts/plot.py
 ```
-### 3. Testing Performance with 100 Images
-To test the performance of the simulator with 100 images:
+### 3. Testing time Performance with 100 Images
+To test the time performance of the simulator with 100 images:
 ```
-python scripts/test_performance.py
+python scripts/time_performance.py
+```
+### 4. Testing Performance metrics with 100 Images
+To test the time performance of the simulator with 100 images:
+```
+python scripts/performance_metrics.py
 ```
 
 ## References
