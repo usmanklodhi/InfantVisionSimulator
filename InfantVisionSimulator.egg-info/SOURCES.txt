@@ -9,6 +9,7 @@ dataset/__init__.py
 scripts/__init__.py
 scripts/plot.py
 scripts/test_dataloader.py
+scripts/test_performace.py
 src/__init__.py
 src/dataloader.py
 src/dataset.py

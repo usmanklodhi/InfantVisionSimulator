@@ -1,11 +1,11 @@
 from torchvision import transforms
 from torch.utils.data import DataLoader
-from dataset import InfantVisionDataset
+from src.dataset import InfantVisionDataset
 from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
 import matplotlib.pyplot as plt
 
-def create_dataloader(data_dir, batch_size, age_in_months):
+def create_dataloader(data_dir, batch_size=1, age_in_months=0, use_transform=True):
     """
     Create a DataLoader for the Infant Vision Dataset.
 
@@ -13,16 +13,23 @@ def create_dataloader(data_dir, batch_size, age_in_months):
         data_dir (str): Path to the dataset directory.
         batch_size (int): Number of samples per batch.
         age_in_months (int): Age in months to parameterize transformations.
+        use_transform (bool): Whether to apply transformations.
 
     Returns:
         DataLoader: DataLoader object.
     """
-    transform = transforms.Compose([
-        transforms.Resize((256, 256)),
-        VisualAcuityTransform(age_in_months),
-        ColorPerceptionTransform(age_in_months),
-        transforms.ToTensor()
-    ])
+    if use_transform:
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            VisualAcuityTransform(age_in_months),
+            ColorPerceptionTransform(age_in_months),
+            transforms.ToTensor()
+        ])
+    else:
+        transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor()
+        ])
     
     dataset = InfantVisionDataset(data_dir, transform=transform)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
@@ -49,7 +56,7 @@ def visualize_images(dataloader, age_in_months):
         break  # Only visualize the first batch
 
 if __name__ == "__main__":
-    data_dir = "test_image_6"  # Path to the image directory
+    data_dir = "dataset/Test_image_6"  # Path to the image directory
     batch_size = 4
     ages = [0, 2, 3, 6, 12]  # Ages to simulate
 
