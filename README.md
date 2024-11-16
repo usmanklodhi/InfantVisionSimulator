@@ -78,6 +78,10 @@ Clone the repository:
 git clone https://github.com/<username>/InfantVisionSimulator.git
 cd InfantVisionSimulator
 ```
+Checkout to this branch 
+```
+git checkout new
+```
 Install the project as a Python package:
 ```
 pip install -e .
