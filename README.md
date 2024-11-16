@@ -1,52 +1,103 @@
+# Infant Vision Simulator
 
-# Infant Vision Simulation with PyTorch
+This repository contains the implementation of the Infant Vision Simulator, developed as part of a project for the Computational Visual Perception course. The project is based on two key research papers:
 
-This project simulates infant vision characteristics such as visual acuity and color perception based on age. The simulation uses a custom PyTorch `DataLoader` to apply transformations that mimic the visual limitations and developmental trajectory of infants.
+1. Potential Downside of High Initial Visual Acuity by Vogelsang.
+2. Infant Color Perception: Insight into Perceptual Development by Skelton.
 
-## Overview
+The simulator models infant vision by implementing image transformations that replicate the visual properties of infants as they age, such as:
 
-This project explores two main aspects of infant vision development:
-1. **Visual Acuity**: Blurring images to simulate an infant's visual acuity, which gradually improves with age from approximately 20/600 at birth to 20/20 by around three years of age.
-2. **Color Perception**: Converting images to grayscale for newborns to simulate their limited color vision, then gradually transitioning to full color perception over the first few months.
+-   Gradual improvement in visual acuity.
+-   Age-dependent changes in color perception.
 
-The transformations are implemented in a custom `Dataset` class in PyTorch, allowing for flexible control of age-dependent image transformations.
+## Project Overview
 
-## Key Features
+### Objectives
 
-- **Flexible Visual Acuity Transformation**: Simulates the gradual improvement in acuity by adjusting the blurring intensity based on age in months, mapping from 20/600 (newborn) to 20/20 (adult vision).
-- **Age-Based Color Perception**: Newborns see in grayscale; over time, the vision shifts from grayscale to full color, reflecting the maturation of color perception.
-- **Performance Benchmarking**: Tests the loading performance with and without transformations to evaluate computational overhead.
+The project is divided into five tasks:
 
-## Code Structure
+1. Literature Search
 
-### `dataset.py`
-Contains the `ImageDataset` class, which:
-- Loads images from a specified directory.
-- Applies transformations based on the `age_in_months` parameter to simulate the properties of infant vision:
-  - **Visual Acuity**: Uses Gaussian blur with a radius that decreases as `age_in_months` increases.
-  - **Color Perception**: Converts images to grayscale if `age_in_months` is below 4 months, with a gradual grayscale-to-color blend for ages 4-12 months.
+Research and identify an infant vision property (beyond low initial acuity) and determine its scientific basis. This property is implemented as an image transformation.
 
-### `utils/plot_utils.py`
-Contains helper functions to plot batches of images with or without transformations for comparison.
+2. Dataset/Dataloader Class Implementation
 
-### `benchmark_data_loading.py`
-A script to benchmark the time taken to load a set of images with and without the infant vision transformations applied. Results are plotted to visualize the effect of transformations.
+Develop a flexible `Dataset` and `Dataloader` that incorporate:
+- Visual acuity transformation (parameterized by age in months, scaling from 20/600 to 20/20).
+
+- The property identified in Task 1.
+
+3. Testing the Dataloader
+
+Verify that the dataloader works as expected by loading and visualizing transformed images.
+
+4. Performance Evaluation
+
+Compare the performance of the data loading process with and without the transformations using 100 images.
+
+5. Report Writing
+
+Prepare a two-page report highlighting:
+
+-   The identified infant vision property and its implementation.
+-   The evaluation results with supporting images and performance plots.
+
+## Repository Structure
+
+```
+InfantVisionSimulator/
+├── dataset/
+│   ├── Test_image_6/         # Folder with 6 test images
+│   ├── Test_image_100/       # Folder with 100 test images
+├── src/
+│   ├── dataset.py            # Dataset class for infant vision
+│   ├── dataloader.py         # Dataloader implementation
+├── transforms/
+│   ├── visual_acuity.py      # Visual acuity transformation
+│   ├── color_perception.py   # Color perception transformation
+├── scripts/
+│   ├── plot.py               # Script for visualizing transformations
+│   ├── test_dataloader.py    # Script for testing the dataloader
+├── output_images/            # Folder for storing output images
+├── README.md                 # Project documentation
+└── report.pdf                # Final report (to be added)
+
+
+```
+
+## Installation
+
+### Prerequisites
+Ensure you have the following installed:
+- Python >= 3.8
+- pip
+
+### Setup
+Clone the repository:
+```
+git clone https://github.com/<username>/InfantVisionSimulator.git
+cd InfantVisionSimulator
+```
+Install the project as a Python package:
+```
+pip install -e .
+```
+This command will install the project in "editable mode," allowing to make changes to the source code without needing to reinstall the package.
+
 
 ## Usage
 
-1. **Setting Up the Dataset**:
-   - Place your images in a directory (e.g., `dataset/`).
-   - Update `img_dir` in the code to point to this directory.
+### 1. Running the Dataloader Test
 
-2. **Running the Simulation**:
-   ```bash
-   python benchmark_data_loading.py
-   ```
-
-   This will benchmark the loading time and display batches of images for visual confirmation of the transformations.
-
-3. **Adjusting Parameters**:
-   - `age_in_months`: Change this parameter in the `benchmark_dataloading.py` script to simulate different stages of visual development.
+To test the dataloader and visualize the image transformations:
+```
+python scripts/test_dataloader.py
+```
+### 2. Visualizing Transformed Images
+To plot and save the transformed images for different ages:
+```
+python scripts/plot.py
+```
 
 ## References
 
@@ -60,9 +111,6 @@ This project is based on findings from two key studies on infant visual developm
 
 These studies provide insight into the perceptual limitations and developmental progression of infant vision, informing the transformations applied in this project.
 
-## Example Plots
 
-The project includes visualization of transformations applied at different ages to provide a clearer understanding of the visual changes infants experience.
 
 ---
-
