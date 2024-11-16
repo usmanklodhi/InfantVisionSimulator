@@ -102,6 +102,11 @@ To plot and save the transformed images for different ages:
 ```
 python scripts/plot.py
 ```
+### 3. Testing Performance with 100 Images
+To test the performance of the simulator with 100 images:
+```
+python scripts/test_performance.py
+```
 
 ## References
 
