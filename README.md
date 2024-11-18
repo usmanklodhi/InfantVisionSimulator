@@ -99,17 +99,23 @@ To test the dataloader and visualize the image transformations:
 ```
 python scripts/test_dataloader.py
 ```
-### 2. Visualizing Transformed Images
+### 2. Running the updated Dataloader Test
+
+To test the dataloader and visualize the image transformations:
+```
+python scripts/test_dataloader_property.py
+```
+### 3. Visualizing Transformed Images
 To plot and save the transformed images for different ages:
 ```
 python scripts/plot.py
 ```
-### 3. Testing time Performance with 100 Images
+### 4. Testing time Performance with 100 Images
 To test the time performance of the simulator with 100 images:
 ```
 python scripts/time_performance.py
 ```
-### 4. Testing Performance metrics with 100 Images
+### 5. Testing Performance metrics with 100 Images
 To test the time performance of the simulator with 100 images:
 ```
 python scripts/performance_metrics.py
