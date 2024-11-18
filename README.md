@@ -1,5 +1,5 @@
 # Infant Vision Simulator
-
+## needs to be updated
 This repository contains the implementation of the Infant Vision Simulator, developed as part of a project for the Computational Visual Perception course. The project is based on two key research papers:
 
 1. Potential Downside of High Initial Visual Acuity by Vogelsang.
