@@ -38,8 +38,14 @@ def save_combined_image(images, titles, output_path, age):
 
 
 def save_combined_images_by_age(data_dir, output_dir, num_images=5, ages=[0, 3, 6, 12]):
+    # Create a transform that resizes the image to 256x256 and converts it to a tensor
+    transform = transforms.Compose([
+        transforms.Resize((256, 256)),
+        # transforms.ToTensor()
+    ])
+
     # Load the dataset
-    dataset = InfantVisionDataset(data_dir)
+    dataset = InfantVisionDataset(data_dir, transform=transform)
 
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
