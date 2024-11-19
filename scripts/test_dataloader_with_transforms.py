@@ -6,7 +6,7 @@ from transforms.color_perception import ColorPerceptionTransform
 from util.utils import save_image_as_plot
 from config import DATA_DIR, AGES, NUM_IMAGES, OUTPUT_DIR
 
-
+# This approach might be marked as redundant. We may not need individual transforms parameterized by age.
 def process_single_image(original_image, age):
     # Apply visual acuity transformation
     visual_acuity = VisualAcuityTransform(age)

@@ -3,6 +3,7 @@ from src.dataloader import create_dataloader
 import matplotlib.pyplot as plt
 from config import DATA_DIR, AGES, NUM_IMAGES
 
+# Part 1 Task 4
 def measure_dataloader_time(data_dir, age, num_images, use_transform):
     dataloader = create_dataloader(data_dir, batch_size=1, age_in_months=age, use_transform=use_transform)
     start_time = time.time()

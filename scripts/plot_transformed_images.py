@@ -49,7 +49,7 @@ def plot_transformed_images(data_dir, ages, save_dir):
 
         # Load dataset and dataloader
         dataset = InfantVisionDataset(data_dir, transform=transform)
-        dataloader = DataLoader(dataset, batch_size=6, shuffle=False)  # Load 6 images per batch
+        dataloader = DataLoader(dataset, batch_size=5, shuffle=False)  # Load 6 images per batch
 
         # Get the first batch of transformed images
         images, _ = next(iter(dataloader))
@@ -57,7 +57,7 @@ def plot_transformed_images(data_dir, ages, save_dir):
         # Save the transformed images grid
         save_transformed_images_grid(images, age, save_dir)
 
-
+# Testing script: 5 images for each of the two properties, with at least 3 different parameter settings
 if __name__ == "__main__":
     data_dir = DATA_DIR
     ages = AGES
