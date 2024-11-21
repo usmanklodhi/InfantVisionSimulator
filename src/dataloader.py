@@ -15,8 +15,7 @@ def create_dataloader_v2(data_dir, batch_size=1, age_in_months=0, use_visual_tra
             VisualAcuityTransform(age_in_months),
             transforms.ToTensor()
         ])
-
-    if use_colour_transform:
+    elif use_colour_transform:
         transform = transforms.Compose([
             transforms.Resize(img_size),
             ColorPerceptionTransform(age_in_months),
@@ -27,7 +26,6 @@ def create_dataloader_v2(data_dir, batch_size=1, age_in_months=0, use_visual_tra
             transforms.Resize(img_size),
             transforms.ToTensor()
         ])
-
 
     dataset = InfantVisionDataset(data_dir, transform=transform)
     return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
@@ -44,7 +42,6 @@ def create_dataloader(data_dir, batch_size=1, age_in_months=0, use_transform=Tru
     ])
     dataset = InfantVisionDataset(data_dir, transform=transform)
     return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-
 
 
 def visualize_images(dataloader, age_in_months, max_batches=1):
