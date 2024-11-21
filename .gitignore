@@ -1,1 +1,9 @@
+.cadence
+.idea
+__pycache__
+InfantVisionSimulator.egg-info
+Test_image_100
+output_images
 plots
+build
+dist
