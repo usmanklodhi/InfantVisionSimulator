@@ -13,7 +13,6 @@ A simulation tool designed to model and analyze infant vision capabilities. This
 - `scripts/`: Scripts for running simulations and analyses.
 - `dataset/`: Dataset files and loaders for vision data.
 - `transforms/`: Image transformation utilities.
-- `util/`: Helper functions and utilities.
 
 ## Installation
 1. Clone this repository:
