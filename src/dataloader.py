@@ -7,6 +7,30 @@ import matplotlib.pyplot as plt
 import numpy as np
 from config import DATA_DIR, AGES, NUM_IMAGES
 
+# Wrapper function for Part 1 Task 4
+def create_dataloader_v2(data_dir, batch_size=1, age_in_months=0, use_visual_transform=False, use_colour_transform=False, img_size=(256, 256)):
+    if use_visual_transform:
+        transform = transforms.Compose([
+            transforms.Resize(img_size),
+            VisualAcuityTransform(age_in_months),
+            transforms.ToTensor()
+        ])
+
+    if use_colour_transform:
+        transform = transforms.Compose([
+            transforms.Resize(img_size),
+            ColorPerceptionTransform(age_in_months),
+            transforms.ToTensor()
+        ])
+    else:
+        transform = transforms.Compose([
+            transforms.Resize(img_size),
+            transforms.ToTensor()
+        ])
+
+
+    dataset = InfantVisionDataset(data_dir, transform=transform)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
 def create_dataloader(data_dir, batch_size=1, age_in_months=0, use_transform=True, img_size=(256, 256)):
     transform = transforms.Compose([
