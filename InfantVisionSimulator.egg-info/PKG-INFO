@@ -1,8 +1,0 @@
-Metadata-Version: 2.1
-Name: InfantVisionSimulator
-Version: 0.1
-Requires-Python: >=3.9
-Requires-Dist: torch
-Requires-Dist: torchvision
-Requires-Dist: Pillow
-Requires-Dist: matplotlib

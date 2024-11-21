@@ -4,11 +4,6 @@ import math
 
 class ColorPerceptionTransform:
     def __init__(self, age_in_months):
-        """
-        Simulates color perception based on the age of the infant.
-        Args:
-            age_in_months (int): Age of the infant in months.
-        """
         self.age_in_months = age_in_months
 
         self.red_green_sensitivity = 1.0 if age_in_months >= 3 else max(0.1, (age_in_months - 2) / 1)
@@ -21,13 +16,6 @@ class ColorPerceptionTransform:
 
 
     def __call__(self, image):
-        """
-        Apply the transformation to the given image.
-        Args:
-            image (PIL.Image): Input image.
-        Returns:
-            PIL.Image: Image with adjusted color perception.
-        """
         # Convert image to NumPy array
         np_image = np.array(image).astype(np.float32)
 
