@@ -43,6 +43,9 @@ def create_dataloader(data_dir, batch_size=1, age_in_months=0, use_transform=Tru
     dataset = InfantVisionDataset(data_dir, transform=transform)
     return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
+# Create a dataloader provided the dataset and batch size
+def create_dataloader_v3(dataset, batch_size=1):
+    return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
 def visualize_images(dataloader, age_in_months, max_batches=1):
     for batch_idx, (images, _) in enumerate(dataloader):

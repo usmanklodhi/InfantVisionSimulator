@@ -7,3 +7,4 @@ output_images
 plots
 build
 dist
+my_datasets/tiny-imagenet-200

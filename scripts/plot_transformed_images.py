@@ -47,7 +47,7 @@ def plot_transformed_images(data_dir, ages, save_dir):
         # Create transform for the current age
         transform = create_age_based_transform(age)
 
-        # Load dataset and dataloader
+        # Load my_datasets and dataloader
         dataset = InfantVisionDataset(data_dir, transform=transform)
         dataloader = DataLoader(dataset, batch_size=5, shuffle=False)  # Load 6 images per batch
 

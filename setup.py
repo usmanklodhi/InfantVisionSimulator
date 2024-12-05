@@ -6,6 +6,7 @@ dependencies = [
     "Pillow",
     "matplotlib",
     "numpy",
+    "datasets"
 ]
 
 setup(

@@ -1,6 +1,5 @@
 from PIL import ImageEnhance, Image
 import numpy as np
-import math
 
 class ColorPerceptionTransform:
     def __init__(self, age_in_months):
@@ -14,10 +13,14 @@ class ColorPerceptionTransform:
         # Saturation adjustment (unchanged)
         self.saturation_factor = min(1.0, age_in_months / 12)
 
-
     def __call__(self, image):
         # Convert image to NumPy array
         np_image = np.array(image).astype(np.float32)
+
+        # Handle grayscale images
+        if len(np_image.shape) == 2:  # Grayscale image
+            np_image = np.expand_dims(np_image, axis=-1)  # Add channel dimension
+            np_image = np.repeat(np_image, 3, axis=-1)    # Convert to pseudo-RGB
 
         # Calculate original brightness per pixel
         original_brightness = np_image.mean(axis=2, keepdims=True)
