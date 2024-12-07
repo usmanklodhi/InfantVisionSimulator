@@ -9,6 +9,7 @@ from scripts import plot_transformed_images as pt
 from src import dataloader as dl, preprocessed_dataset as ppd
 from datasets import load_dataset
 from my_datasets import tiny_imagenet as ti
+import os
 
 # Curriculum learning and parameters
 stages = ['young', 'mid', 'old']
@@ -92,9 +93,11 @@ def train_model(model, dataloader, val_dataloader, criterion, optimizer, schedul
     print(f"\n[{stage_name}] Training completed for all {num_epochs} epochs.")
     return train_losses, val_losses
 
-
 # Plot learning curves
 def plot_learning_curves(train_losses, val_losses, stage_name):
+    output_dir = 'outputs/figures'
+    os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
+
     plt.figure()
     plt.plot(train_losses, label='Training Loss')
     plt.plot(val_losses, label='Validation Loss')
@@ -102,10 +105,14 @@ def plot_learning_curves(train_losses, val_losses, stage_name):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig(f'outputs/figures/{stage_name}_learning_curves.png')
+    plt.savefig(f'{output_dir}/{stage_name}_learning_curves.png')  # Save the figure
     plt.show()
 
+
 def main():
+    # Ensure directories exist
+    os.makedirs('outputs/models', exist_ok=True)
+
     # Load the Hugging Face dataset
     data = datasets.load_dataset("zh-plus/tiny-imagenet")
     train_data, val_data = (data['train'], data['valid'])
