@@ -32,14 +32,14 @@ if __name__ == '__main__':
     data = load_dataset("zh-plus/tiny-imagenet")
     train_data, val_data = (data['train'], data['valid'])
 
-    # Define transformations
-    young_transform = pt.create_age_based_transform(1)
-    mid_transform = pt.create_age_based_transform(6)
-    old_transform = pt.create_age_based_transform(12)
+    # # Define transformations
+    # young_transform = pt.create_age_based_transform(1)
+    # mid_transform = pt.create_age_based_transform(6)
+    # old_transform = pt.create_age_based_transform(12)
 
-    young_dataloader = get_data_loader('young')
-    mid_dataloader = get_data_loader('mid')
-    old_dataloader = get_data_loader('old')
+    young_dataloader = get_data_loader('young', train_data)
+    mid_dataloader = get_data_loader('mid', train_data)
+    old_dataloader = get_data_loader('old', train_data)
 
     # Validation dataloader
     val_dataset = ppd.PreprocessedDataset(val_data, transform=pt.create_age_based_transform(12))
