@@ -36,7 +36,7 @@ def train_model(model, dataloader, val_dataloader, criterion, optimizer, schedul
 
             # Compute loss
             loss = criterion(outputs, targets)
-            logging.debug(f"[{stage_name}] Epoch {epoch + 1}, Batch {batch_idx + 1}: Loss = {loss.item()}")
+            logging.info(f"[{stage_name}] Epoch {epoch + 1}, Batch {batch_idx + 1}: Loss = {loss.item()}")
 
             # Backward pass and optimization
             loss.backward()

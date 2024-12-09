@@ -15,7 +15,7 @@ from torchvision.models import resnet18
 stages = ['young', 'mid', 'old']
 # dataset_path = './tiny-imagenet-200'
 batch_size = 128
-num_epochs = 10
+num_epochs = 30
 lr = 0.01
 
 # Device setup
