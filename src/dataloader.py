@@ -5,7 +5,7 @@ from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
 import matplotlib.pyplot as plt
 import numpy as np
-from config.__init__ import DATA_DIR, AGES
+# from config.__init__ import DATA_DIR, AGES
 
 
 # Wrapper function for Part 1 Task 4
@@ -62,7 +62,7 @@ def visualize_images(dataloader, age_in_months, max_batches=1):
 
         plt.show()
 
-if __name__ == "__main__":
-    for age in AGES:
-        dataloader = create_dataloader(DATA_DIR, batch_size=4, age_in_months=age)
-        visualize_images(dataloader, age_in_months=age)
+# if __name__ == "__main__":
+#     for age in AGES:
+#         dataloader = create_dataloader(DATA_DIR, batch_size=4, age_in_months=age)
+#         visualize_images(dataloader, age_in_months=age)
