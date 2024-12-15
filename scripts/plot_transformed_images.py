@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from src.dataset import InfantVisionDataset
 from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
-from config import DATA_DIR, AGES, NUM_IMAGES, OUTPUT_DIR
+from config.__init__ import DATA_DIR, AGES, OUTPUT_DIR
 
 
 def create_age_based_transform(age):

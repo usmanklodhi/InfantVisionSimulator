@@ -5,7 +5,8 @@ from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
 import matplotlib.pyplot as plt
 import numpy as np
-from config import DATA_DIR, AGES, NUM_IMAGES
+from config.__init__ import DATA_DIR, AGES
+
 
 # Wrapper function for Part 1 Task 4
 def create_dataloader_v2(data_dir, batch_size=1, age_in_months=0, use_visual_transform=False, use_colour_transform=False, img_size=(256, 256)):
