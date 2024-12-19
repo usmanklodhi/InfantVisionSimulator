@@ -7,6 +7,10 @@ from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
 # from config.__init__ import DATA_DIR, AGES, OUTPUT_DIR
 
+import config
+print(config.__file__)  # Check which file is being imported
+print(dir(config))      # Check the attributes in the module
+
 
 def create_age_based_transform(age):
     return transforms.Compose([
@@ -15,7 +19,6 @@ def create_age_based_transform(age):
         ColorPerceptionTransform(age),
         transforms.ToTensor()
     ])
-
 
 def save_transformed_images_grid(images, age, save_dir, grid_title="Transformed Images"):
     # Create output directory if not exists
