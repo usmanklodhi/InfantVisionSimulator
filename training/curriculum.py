@@ -10,6 +10,8 @@ import os
 from training import utils as ut
 from training import train as tr
 from torchvision.models import resnet18
+from datasets import load_from_disk
+
 
 # Curriculum learning and parameters
 stages = ['young', 'mid', 'old']
@@ -29,7 +31,9 @@ def get_resnet18_LOCAL(num_classes=200):
 def main():
     os.makedirs('outputs/models', exist_ok=True)
 
-    data = datasets.load_dataset("zh-plus/tiny-imagenet")
+    # data = datasets.load_dataset("zh-plus/tiny-imagenet")
+
+    data = load_from_disk("./my_datasets/tiny-imagenet")
     train_data, val_data = (data['train'], data['valid'])
 
     val_dataset = ppd.PreprocessedDataset(val_data, transform=ti.old_transform)
