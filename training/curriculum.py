@@ -33,7 +33,7 @@ def main():
 
     # data = datasets.load_dataset("zh-plus/tiny-imagenet")
 
-    data = load_from_disk("./my_datasets/tiny-imagenet")
+    data = load_from_disk("./tiny-imagenet")
     train_data, val_data = (data['train'], data['valid'])
 
     val_dataset = ppd.PreprocessedDataset(val_data, transform=ti.old_transform)
