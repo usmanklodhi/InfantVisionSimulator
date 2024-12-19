@@ -9,7 +9,7 @@ from my_datasets import tiny_imagenet as ti
 import os
 from training import utils as ut
 from training import train as tr
-from models import resnet18 as resnet
+from models import resnet18 as rn
 from datasets import load_from_disk
 
 
@@ -34,7 +34,7 @@ def main():
     val_dataset = ppd.PreprocessedDataset(val_data, transform=ti.old_transform)
     val_dataloader = dl.create_dataloader_v3(val_dataset, batch_size=batch_size)
 
-    model = resnet.get_resnet18().to(device)
+    model = rn.get_resnet18().to(device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=1e-4)
