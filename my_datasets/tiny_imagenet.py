@@ -1,11 +1,6 @@
-# import torch
 from scripts import plot_transformed_images as pt
 from src import dataloader as dl, preprocessed_dataset as ppd
 from datasets import load_dataset
-
-# The following lines load the dataset from HuggingFace
-# data = load_dataset("zh-plus/tiny-imagenet")
-# train_data, val_data = (data['train'], data['valid'])
 
 # Define transformations for different stages of infant development
 # 3 stages: 1 month, 6 months, 12 months
@@ -31,11 +26,6 @@ def get_data_loader(stage, train_data, batch_size=128):
 if __name__ == '__main__':
     data = load_dataset("zh-plus/tiny-imagenet")
     train_data, val_data = (data['train'], data['valid'])
-
-    # # Define transformations
-    # young_transform = pt.create_age_based_transform(1)
-    # mid_transform = pt.create_age_based_transform(6)
-    # old_transform = pt.create_age_based_transform(12)
 
     young_dataloader = get_data_loader('young', train_data)
     mid_dataloader = get_data_loader('mid', train_data)
