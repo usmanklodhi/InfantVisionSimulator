@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import os
 
 
-def plot_combined_losses(train_losses, val_losses):
+def plot_combined_losses(train_losses, val_losses, filename=None):
     """Plot combined training and validation losses."""
     epochs = list(range(1, len(train_losses) + 1))
     plt.figure(figsize=(10, 6))
@@ -13,5 +13,5 @@ def plot_combined_losses(train_losses, val_losses):
     plt.title('Training and Validation Loss Across All Stages')
     plt.legend()
     plt.grid(True)
-    plt.savefig('outputs/loss_plot.png')
+    plt.savefig('outputs/loss_plot' + filename + '.png')
     plt.show()
