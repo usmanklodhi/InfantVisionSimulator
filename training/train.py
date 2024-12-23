@@ -1,5 +1,6 @@
 import torch
 import logging
+from setting import DEVICE
 
 # Configure logging
 logging.basicConfig(
@@ -12,7 +13,9 @@ logging.basicConfig(
 )
 
 def train_model(model, dataloader, val_dataloader, criterion, optimizer, scheduler, num_epochs, stage_name):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # Device setup
+    device = torch.device('cuda' if torch.cuda.is_available() else DEVICE)
+    #device = torch.device("mps")
     logging.info(f"[{stage_name}] Training model on device: {device}")
 
     train_losses = []

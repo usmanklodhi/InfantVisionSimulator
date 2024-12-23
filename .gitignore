@@ -4,6 +4,7 @@ __pycache__
 InfantVisionSimulator.egg-info
 Test_image_100
 output_images
+outputs
 plots
 build
 dist

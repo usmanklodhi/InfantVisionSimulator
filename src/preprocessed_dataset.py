@@ -13,6 +13,9 @@ class PreprocessedDataset(Dataset):
         item = self.data[idx]  # Access a single data item as a dictionary
         image, label = item['image'], item['label']
 
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+
         if self.transform:
             image = self.transform(image)
 
