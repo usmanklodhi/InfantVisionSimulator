@@ -3,13 +3,13 @@ import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import models
 from datasets import load_dataset
 
 from src.dataloader import create_curriculum_dataloaders
 from src.dataloader import create_no_curriculum_dataloader
 from training.train import train_model
 from training.utils import plot_learning_curves
+from src.models import get_model
 from setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES, DEVICE
 
 
@@ -18,13 +18,7 @@ def load_tiny_imagenet_data(split="train"):
     data = load_dataset("zh-plus/tiny-imagenet")
     return data[split]
 
-# 2. Define the ResNet18 Model
-def create_resnet18(num_classes):
-    model = models.resnet18(pretrained=False)
-    model.fc = nn.Linear(model.fc.in_features, num_classes)
-    return model
-
-# 3. Curriculum Training with Flexible Epoch Allocation
+# 2. Curriculum Training with Flexible Epoch Allocation
 def train_and_save_model_curriculum(model,
                                     curriculum_dataloaders,
                                     val_dataloader,
@@ -35,7 +29,8 @@ def train_and_save_model_curriculum(model,
                                     scheduler,
                                     total_epochs,
                                     model_output_dir,
-                                    loss_output_dir):
+                                    loss_output_dir,
+                                    model_name):
     """
     Train the model through multiple 'stages' corresponding to different infant ages.
     
@@ -54,7 +49,7 @@ def train_and_save_model_curriculum(model,
 
     # Loop through each age stage in the order given by `ages`
     for age in ages:
-        stage_name = f"Curriculum_Age_{age}mo"
+        stage_name = f"Curriculum_Age_{age}mo_{model_name}"
         dataloader = curriculum_dataloaders[age]
         epochs_for_this_stage = stage_epochs[age]
 
@@ -80,29 +75,25 @@ def train_and_save_model_curriculum(model,
     )
 
     # Save the final model
-    torch.save(model.state_dict(), os.path.join(model_output_dir, "resnet18_curriculum_final.pth"))
+    torch.save(model.state_dict(), os.path.join(model_output_dir, f"{model_name}_curriculum_final.pth"))
 
     # Save the train/val losses to JSON
-    loss_file = "curriculum_losses.json"
+    loss_file = f"{model_name}_curriculum_losses.json"
     with open(os.path.join(loss_output_dir, loss_file), "w") as f:
         json.dump({"train_losses": overall_train_losses, "val_losses": overall_val_losses}, f)
 
     # Plot learning curves for the entire curriculum
-    final_stage_name = "CurriculumLearning_FlexibleEpochs"
+    final_stage_name = f"CurriculumLearning_{model_name}"
     plot_learning_curves(overall_train_losses, overall_val_losses, final_stage_name)
 
     return overall_train_losses, overall_val_losses
 
-# 4. Helper Function: Create a default or custom stage-to-epoch mapping
+# 3. Helper Function: Create a default or custom stage-to-epoch mapping
 def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
     """
     Returns a dictionary that maps each age to a specific number of epochs.
     If user_mapping is provided, use that directly (and check correctness).
     Otherwise, split total_epochs equally across ages.
-    
-    Example usage:
-      user_mapping = {6:2, 9:5, 12:8}
-      total_epochs = 15
     """
     if user_mapping is not None:
         # Validate sum
@@ -122,7 +113,6 @@ def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
         base_epochs = total_epochs // n_stages
         remainder = total_epochs % n_stages
 
-
         stage_epoch_map = {}
         for idx, age in enumerate(ages):
             # Distribute any remainder (1 extra epoch) among the first 'remainder' stages
@@ -131,26 +121,27 @@ def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
 
         return stage_epoch_map
 
-# 5. Main Training Loop (Curriculum)
+# 4. Main Training Loop (Curriculum)
 def train_curriculum(batch_size,
                      total_epochs,
                      learning_rate,
                      num_classes,
                      model_output_dir,
                      loss_output_dir,
+                     model_names,
                      ages=AGES,
                      user_epoch_map=None):
     """
     - Loads Tiny ImageNet training and validation data.
     - Creates dataloaders with age-based transforms (curriculum).
-    - Creates and trains a ResNet18 model with the total epochs distributed
+    - Creates and trains multiple models with the total epochs distributed
       according to a user-provided or default scheme.
     """
-    # 5.1 Load dataset
+    # 4.1 Load dataset
     train_data = load_tiny_imagenet_data(split="train")
     val_data = load_tiny_imagenet_data(split="valid")
 
-    # 5.2 Create curriculum DataLoaders (one DataLoader per age)
+    # 4.2 Create curriculum DataLoaders (one DataLoader per age)
     curriculum_dataloaders = create_curriculum_dataloaders(
         dataset=train_data,
         ages=ages,
@@ -160,60 +151,61 @@ def train_curriculum(batch_size,
     # Single (no transform) validation DataLoader
     val_dataloader = create_no_curriculum_dataloader(val_data, batch_size)
 
-    # 5.3 Create ResNet18 model
-    model = create_resnet18(num_classes=num_classes)
+    # 4.3 Train each model
+    for model_name in model_names:
+        # Create model
+        model = get_model(model_name, num_classes=num_classes)
 
-    # 5.4 Define loss function, optimizer, scheduler
-    device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
-    model = model.to(device)
+        # Define loss function, optimizer, scheduler
+        device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
+        model = model.to(device)
 
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate,
-                          momentum=0.9, weight_decay=1e-4)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_epochs)
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.SGD(model.parameters(), lr=learning_rate,
+                              momentum=0.9, weight_decay=1e-4)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_epochs)
 
-    # 5.5 Create stage-epoch mapping (user or default)
-    stage_epochs = create_stage_epoch_mapping(
-        ages=ages,
-        total_epochs=total_epochs,
-        user_mapping=user_epoch_map
-    )
+        # Create stage-epoch mapping (user or default)
+        stage_epochs = create_stage_epoch_mapping(
+            ages=ages,
+            total_epochs=total_epochs,
+            user_mapping=user_epoch_map
+        )
 
-    # 5.6 Train with curriculum
-    train_and_save_model_curriculum(
-        model=model,
-        curriculum_dataloaders=curriculum_dataloaders,
-        val_dataloader=val_dataloader,
-        ages=ages,
-        stage_epochs=stage_epochs,
-        criterion=criterion,
-        optimizer=optimizer,
-        scheduler=scheduler,
-        total_epochs=total_epochs,
-        model_output_dir=model_output_dir,
-        loss_output_dir=loss_output_dir
-    )
+        # Train and save model
+        train_and_save_model_curriculum(
+            model=model,
+            curriculum_dataloaders=curriculum_dataloaders,
+            val_dataloader=val_dataloader,
+            ages=ages,
+            stage_epochs=stage_epochs,
+            criterion=criterion,
+            optimizer=optimizer,
+            scheduler=scheduler,
+            total_epochs=total_epochs,
+            model_output_dir=model_output_dir,
+            loss_output_dir=loss_output_dir,
+            model_name=model_name
+        )
 
-# 6. Example Entry Point
+# 5. Example Entry Point
 def main():
-    # Hyperparameters (same as no curriculum)
+    # Hyperparameters
     batch_size = BATCH_SIZE
-    total_epochs = EPOCHS         # from setting.py
+    total_epochs = EPOCHS
     learning_rate = LEARNING_RATE
-    num_classes = NUM_CLASSES     # Tiny ImageNet has 200 classes
-    ages = AGES                   # e.g. [6, 9, 12]
-    
+    num_classes = NUM_CLASSES
+    ages = AGES
+    model_names = ["resnet18", "vgg16", "alexnet"]
+
     # Output folders
     model_output_dir = "outputs/models/curriculum/"
     loss_output_dir = "outputs/loss_logs/curriculum/"
 
-    # User-provided epoch distribution (optional):
-    # Example: 2 epochs for age=6, 5 for age=9, 8 for age=12 => total 15
-    # If None, it will evenly split the total epochs.
-    user_epoch_map = None  
-    # user_epoch_map = {6: 2, 9: 5, 12: 8}
+    # User-provided epoch distribution (optional)
+    user_epoch_map = None  # Example: {6: 2, 9: 5, 12: 8}
 
-    # Start training with curriculum
+    # Start training with curriculum for all models
     train_curriculum(
         batch_size=batch_size,
         total_epochs=total_epochs,
@@ -221,6 +213,7 @@ def main():
         num_classes=num_classes,
         model_output_dir=model_output_dir,
         loss_output_dir=loss_output_dir,
+        model_names=model_names,
         ages=ages,
         user_epoch_map=user_epoch_map
     )

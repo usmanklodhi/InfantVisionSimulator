@@ -4,10 +4,10 @@
 # DATA_DIR = "../my_datasets"
 # OUTPUT_DIR = "output_images/"
 # NUM_IMAGES = 100
-AGES = [6, 9, 12]
+AGES = [3, 6, 9, 12]
 
 ## Project PART 2
-EPOCHS = 15
+EPOCHS = 18
 BATCH_SIZE = 64
 LEARNING_RATE = 0.01
 NUM_CLASSES = 200  # Tiny ImageNet has 200 classes
