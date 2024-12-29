@@ -123,21 +123,21 @@ def main():
     # Define the directories where loss logs and models are stored
     models_info = {
         "resnet18": {
-            "Stagewise Curriculum Learning": "outputs/models/curriculum/resnet18_curriculum_final.pth",
+            "Curriculum Learning": "outputs/models/curriculum/resnet18_curriculum_final.pth",
             #"Reverse Curriculum Learning": "outputs/models/reverse_curriculum/resnet18_reverse_curriculum_final.pth",
             "No Curriculum": "outputs/models/no_curriculum/resnet18_no_curriculum_final.pth",
             "Visual Acuity Transform": "outputs/models/visual_acuity/resnet18_visual_acuity_final.pth",
             "Color Perception Transform": "outputs/models/color_perception/resnet18_color_perception_final.pth"
         },
         "alexnet": {
-            "Stagewise Curriculum Learning": "outputs/models/curriculum/alexnet_curriculum_final.pth",
+            "Curriculum Learning": "outputs/models/curriculum/alexnet_curriculum_final.pth",
             #"Reverse Curriculum Learning": "outputs/models/reverse_curriculum/alexnet_reverse_curriculum_final.pth",
             "No Curriculum": "outputs/models/no_curriculum/alexnet_no_curriculum_final.pth",
             "Visual Acuity Transform": "outputs/models/visual_acuity/alexnet_visual_acuity_final.pth",
             "Color Perception Transform": "outputs/models/color_perception/alexnet_color_perception_final.pth"
         },
         "vgg16": {
-            "Stagewise Curriculum Learning": "outputs/models/curriculum/vgg16_curriculum_final.pth",
+            "Curriculum Learning": "outputs/models/curriculum/vgg16_curriculum_final.pth",
             #"Reverse Curriculum Learning": "outputs/models/reverse_curriculum/vgg16_reverse_curriculum_final.pth",
             "No Curriculum": "outputs/models/no_curriculum/vgg16_no_curriculum_final.pth",
             "Visual Acuity Transform": "outputs/models/visual_acuity/vgg16_visual_acuity_final.pth",
@@ -147,21 +147,21 @@ def main():
 
     loss_logs = {
         "resnet18": {
-            "Stagewise Curriculum Learning": "outputs/loss_logs/curriculum/resnet18_curriculum_losses.json",
+            "Curriculum Learning": "outputs/loss_logs/curriculum/resnet18_curriculum_losses.json",
             #"Reverse Curriculum Learning": "outputs/loss_logs/reverse_curriculum/resnet18_reverse_curriculum_losses.json",
             "No Curriculum": "outputs/loss_logs/no_curriculum/resnet18_no_curriculum_losses.json",
             "Visual Acuity Transform": "outputs/loss_logs/visual_acuity/resnet18_visual_acuity_losses.json",
             "Color Perception Transform": "outputs/loss_logs/color_perception/resnet18_color_perception_losses.json"
         },
         "alexnet": {
-            "Stagewise Curriculum Learning": "outputs/loss_logs/curriculum/alexnet_curriculum_losses.json",
+            "Curriculum Learning": "outputs/loss_logs/curriculum/alexnet_curriculum_losses.json",
             #"Reverse Curriculum Learning": "outputs/loss_logs/reverse_curriculum/alexnet_reverse_curriculum_losses.json",
             "No Curriculum": "outputs/loss_logs/no_curriculum/alexnet_no_curriculum_losses.json",
             "Visual Acuity Transform": "outputs/loss_logs/visual_acuity/alexnet_visual_acuity_losses.json",
             "Color Perception Transform": "outputs/loss_logs/color_perception/alexnet_color_perception_losses.json"
         },
         "vgg16": {
-            "Stagewise Curriculum Learning": "outputs/loss_logs/curriculum/vgg16_curriculum_losses.json",
+            "Curriculum Learning": "outputs/loss_logs/curriculum/vgg16_curriculum_losses.json",
             #"Reverse Curriculum Learning": "outputs/loss_logs/reverse_curriculum/vgg16_reverse_curriculum_losses.json",
             "No Curriculum": "outputs/loss_logs/no_curriculum/vgg16_no_curriculum_losses.json",
             "Visual Acuity Transform": "outputs/loss_logs/visual_acuity/vgg16_visual_acuity_losses.json",

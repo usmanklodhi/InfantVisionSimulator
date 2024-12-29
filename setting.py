@@ -7,8 +7,9 @@
 AGES = [3, 6, 9, 12]
 
 ## Project PART 2
-EPOCHS = 18
-BATCH_SIZE = 64
+DATASET_PATH="my_datasets/tiny-imagenet-200"
+EPOCHS = 20
+BATCH_SIZE = 128
 LEARNING_RATE = 0.01
 NUM_CLASSES = 200  # Tiny ImageNet has 200 classes
 DEVICE = "mps"

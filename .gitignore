@@ -9,6 +9,6 @@ plots
 build
 dist
 my_datasets/tiny-imagenet-200
-my_datasets/tiny-imagenet
+my_datasets/*
 tiny-imagenet
 training.log
