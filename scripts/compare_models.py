@@ -112,17 +112,21 @@ def save_accuracy_histogram(results, output_path):
 def main():
     # Define the directories where loss logs and models are stored
     models_info = {
-        "Curriculum Learning": "outputs/models/resnet18_final_curriculum.pth",
-        "No Curriculum": "outputs/models/resnet18_final_non_curriculum.pth",
-        #"Visual Acuity Transform": "outputs/models/visual_acuity/visual_acuity_final.pth",
-        #"Color Perception Transform": "outputs/models/color_perception/color_perception_final.pth"
+        "Stagewise Curriculum Learning": "outputs/models/curriculum/resnet18_final_curriculum.pth",
+        "Imagewise Curriculum Learning": "outputs/models/imagewise_curriculum/resnet18_imagewise_curriculum_final.pth",
+        "Reverse Curriculum Learning": "outputs/models/reverse_curriculum/resnet18_reverse_curriculum_final.pth",
+        "No Curriculum": "outputs/models/no_curriculum/resnet18_final_non_curriculum.pth",
+        "Visual Acuity Transform": "outputs/models/visual_acuity/visual_acuity_final.pth",
+        "Color Perception Transform": "outputs/models/color_perception/color_perception_final.pth"
     }
 
     loss_logs = {
-        "Curriculum Learning": "outputs/loss_logs/curriculum_flexible/curriculum_losses.json",
+        "Stagewise Curriculum Learning": "outputs/loss_logs/curriculum/curriculum_losses.json",
+        "Imagewise Curriculum Learning": "outputs/loss_logs/imagewise_curriculum/imagewise_curriculum_losses.json",
+        "Reverse Curriculum Learning": "outputs/loss_logs/reverse_curriculum/reverse_curriculum_losses.json",
         "No Curriculum": "outputs/loss_logs/no_curriculum/no_curriculum_losses.json",
-        #"Visual Acuity Transform": "outputs/loss_logs/visual_acuity/final_acuity_losses.json",
-        #"Color Perception Transform": "outputs/loss_logs/color_perception/final_color_losses.json"
+        "Visual Acuity Transform": "outputs/loss_logs/visual_acuity/final_acuity_losses.json",
+        "Color Perception Transform": "outputs/loss_logs/color_perception/final_color_losses.json"
     }
 
     # Load validation dataset

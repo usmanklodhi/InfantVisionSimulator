@@ -25,7 +25,7 @@ def create_resnet18(num_classes):
     return model
 
 # 3. Curriculum Training with Flexible Epoch Allocation
-def train_and_save_model_curriculum(model,
+def train_and_save_model_reverse_curriculum(model,
                                     curriculum_dataloaders,
                                     val_dataloader,
                                     ages,
@@ -53,8 +53,8 @@ def train_and_save_model_curriculum(model,
     overall_val_losses = []
 
     # Loop through each age stage in the order given by `ages`
-    for age in ages:
-        stage_name = f"Curriculum_Age_{age}mo"
+    for age in reversed(ages):
+        stage_name = f"Reverse_Curriculum_Age_{age}mo"
         dataloader = curriculum_dataloaders[age]
         epochs_for_this_stage = stage_epochs[age]
 
@@ -80,16 +80,17 @@ def train_and_save_model_curriculum(model,
     )
 
     # Save the final model
-    torch.save(model.state_dict(), os.path.join(model_output_dir, "resnet18_curriculum_final.pth"))
+    torch.save(model.state_dict(), os.path.join(model_output_dir, "resnet18_reverse_curriculum_final.pth"))
 
     # Save the train/val losses to JSON
-    loss_file = "curriculum_losses.json"
+    loss_file = "reverse_curriculum_losses.json"
     with open(os.path.join(loss_output_dir, loss_file), "w") as f:
         json.dump({"train_losses": overall_train_losses, "val_losses": overall_val_losses}, f)
 
-    # Plot learning curves for the entire curriculum
-    final_stage_name = "CurriculumLearning_FlexibleEpochs"
+    # Plot learning curves for the entire reverse curriculum
+    final_stage_name = "Reverse_CurriculumLearning_FlexibleEpochs"
     plot_learning_curves(overall_train_losses, overall_val_losses, final_stage_name)
+
 
     return overall_train_losses, overall_val_losses
 
@@ -132,7 +133,7 @@ def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
         return stage_epoch_map
 
 # 5. Main Training Loop (Curriculum)
-def train_curriculum(batch_size,
+def train_reverse_curriculum(batch_size,
                      total_epochs,
                      learning_rate,
                      num_classes,
@@ -180,7 +181,7 @@ def train_curriculum(batch_size,
     )
 
     # 5.6 Train with curriculum
-    train_and_save_model_curriculum(
+    train_and_save_model_reverse_curriculum(
         model=model,
         curriculum_dataloaders=curriculum_dataloaders,
         val_dataloader=val_dataloader,
@@ -204,8 +205,8 @@ def main():
     ages = AGES                   # e.g. [6, 9, 12]
     
     # Output folders
-    model_output_dir = "outputs/models/curriculum/"
-    loss_output_dir = "outputs/loss_logs/curriculum/"
+    model_output_dir = "outputs/models/reverse_curriculum/"
+    loss_output_dir = "outputs/loss_logs/reverse_curriculum/"
 
     # User-provided epoch distribution (optional):
     # Example: 2 epochs for age=6, 5 for age=9, 8 for age=12 => total 15
@@ -214,7 +215,7 @@ def main():
     # user_epoch_map = {6: 2, 9: 5, 12: 8}
 
     # Start training with curriculum
-    train_curriculum(
+    train_reverse_curriculum(
         batch_size=batch_size,
         total_epochs=total_epochs,
         learning_rate=learning_rate,
@@ -224,6 +225,7 @@ def main():
         ages=ages,
         user_epoch_map=user_epoch_map
     )
+
 
 if __name__ == "__main__":
     main()

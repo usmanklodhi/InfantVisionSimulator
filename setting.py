@@ -8,7 +8,7 @@ AGES = [6, 9, 12]
 
 ## Project PART 2
 EPOCHS = 15
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 LEARNING_RATE = 0.01
 NUM_CLASSES = 200  # Tiny ImageNet has 200 classes
 DEVICE = "mps"
