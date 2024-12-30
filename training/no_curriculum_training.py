@@ -71,8 +71,8 @@ def main():
 
     model_output_dir = "outputs/models/no_curriculum/"
     loss_output_dir = "outputs/loss_logs/no_curriculum/"
-    model_names = ["resnet18", "vgg16", "alexnet"]
-    #model_names = [ "alexnet"]
+    #model_names = ["resnet18", "vgg16", "alexnet"]
+    model_names = [ "resnet18"]
 
     train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, model_output_dir, loss_output_dir, model_names)
 

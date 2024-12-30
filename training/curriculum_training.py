@@ -196,7 +196,9 @@ def main():
     learning_rate = LEARNING_RATE
     num_classes = NUM_CLASSES
     ages = AGES
-    model_names = ["resnet18", "vgg16", "alexnet"]
+    #model_names = ["resnet18", "vgg16", "alexnet"]
+    model_names = ["resnet18"]
+
 
     # Output folders
     model_output_dir = "outputs/models/curriculum/"
