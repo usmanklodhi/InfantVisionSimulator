@@ -12,4 +12,4 @@ EPOCHS = 30
 BATCH_SIZE = 64
 LEARNING_RATE = 0.001
 NUM_CLASSES = 200  # Tiny ImageNet has 200 classes
-DEVICE = "mps"
+DEVICE = "cpu"
