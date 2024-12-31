@@ -28,6 +28,11 @@ def train_model(model, dataloader, val_dataloader, criterion, optimizer, schedul
         model.train()
         running_loss = 0.0
         logging.info(f"[{stage_name}] Epoch {epoch + 1}: Starting training phase")
+
+        # Print total number of batches
+        total_batches = len(dataloader)
+        logging.info(f"[{stage_name}] Epoch {epoch + 1}: Total batches = {total_batches}")
+
         for batch_idx, (inputs, targets) in enumerate(dataloader):
             inputs, targets = inputs.to(device), targets.to(device)
 
