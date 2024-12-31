@@ -15,6 +15,8 @@ from configuration.setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_C
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
+    print("Loading Tiny ImageNet data... (from disk)")
+
     local_path = "./tiny-imagenet"
 
     data = load_from_disk(local_path)
