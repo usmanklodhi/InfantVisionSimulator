@@ -203,6 +203,10 @@ def main():
     #model_names = ["resnet18", "vgg16", "alexnet"]
     model_names = ["resnet18"]
 
+    # print batch size and total epochs
+    print(f"Batch size: {batch_size}")
+    print(f"Total epochs: {total_epochs}")
+
 
     # Output folders
     model_output_dir = "outputs/models/curriculum/"
