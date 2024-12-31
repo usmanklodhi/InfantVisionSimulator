@@ -10,7 +10,7 @@ from src.dataloader import create_color_dataloader, create_no_transform
 from training.train import train_model
 from training.utils import plot_learning_curves
 from src.models import get_model
-from setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES, DEVICE
+from setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
 
 # Helper function to create stage-to-epoch mapping
@@ -33,7 +33,7 @@ def train_and_save_color_perception_model(model_name, dataloaders, val_dataloade
     os.makedirs(model_output_dir, exist_ok=True)
     os.makedirs(loss_output_dir, exist_ok=True)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = get_model(model_name, NUM_CLASSES).to(device)
 
     all_train_losses = []

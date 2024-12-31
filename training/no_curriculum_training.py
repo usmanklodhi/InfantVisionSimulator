@@ -8,7 +8,7 @@ from src.dataloader import create_no_curriculum_dataloader
 from training.train import train_model
 from training.utils import plot_learning_curves
 from src.models import get_model
-from setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES, DEVICE
+from setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
@@ -51,7 +51,7 @@ def train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, mode
     for model_name in model_names:
         # Initialize model, criterion, optimizer, and scheduler
         model = get_model(model_name, num_classes=num_classes)
-        device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         model = model.to(device)
 
         criterion = nn.CrossEntropyLoss()
