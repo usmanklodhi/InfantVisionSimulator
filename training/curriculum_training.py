@@ -3,7 +3,7 @@ import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 
 from src.dataloader import create_curriculum_dataloaders
 from src.dataloader import create_no_curriculum_dataloader
@@ -15,7 +15,9 @@ from configuration.setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_C
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
-    data = load_dataset("zh-plus/tiny-imagenet")
+    local_path = "./tiny-imagenet"
+
+    data = load_from_disk(local_path)
     return data[split]
 
 # 2. Curriculum Training with Flexible Epoch Allocation
