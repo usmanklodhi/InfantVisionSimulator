@@ -1,7 +1,7 @@
 # import time
 # from src.dataloader import create_dataloader_v2
 # import matplotlib.pyplot as plt
-# from config.__init__ import DATA_DIR, AGES, NUM_IMAGES
+# from configuration.__init__ import DATA_DIR, AGES, NUM_IMAGES
 
 # # Part 1 Task 4
 # def measure_dataloader_time(data_dir, age, num_images, use_visual_transform=False, use_colour_transform=False):

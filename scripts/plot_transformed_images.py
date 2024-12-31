@@ -5,11 +5,11 @@ from torch.utils.data import DataLoader
 from src.dataset import InfantVisionDataset
 from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
-# from config.__init__ import DATA_DIR, AGES, OUTPUT_DIR
+# from configuration.__init__ import DATA_DIR, AGES, OUTPUT_DIR
 
-import config
-print(config.__file__)  # Check which file is being imported
-print(dir(config))      # Check the attributes in the module
+import configuration
+print(configuration.__file__)  # Check which file is being imported
+print(dir(configuration))      # Check the attributes in the module
 
 
 def create_age_based_transform(age):

@@ -10,7 +10,7 @@ from src.dataloader import create_color_dataloader, create_no_transform
 from training.train import train_model
 from training.utils import plot_learning_curves
 from src.models import get_model
-from setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
+from configuration.setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
 
 # Helper function to create stage-to-epoch mapping

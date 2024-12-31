@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import Dataset
 from torchvision.io import read_image, ImageReadMode
 from torchvision.transforms import Normalize
-from setting import DATASET_PATH
+from configuration.setting import DATASET_PATH
 
 
 # Load ID mappings

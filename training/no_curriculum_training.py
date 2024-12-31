@@ -8,7 +8,7 @@ from src.dataloader import create_no_curriculum_dataloader
 from training.train import train_model
 from training.utils import plot_learning_curves
 from src.models import get_model
-from setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
+from configuration.setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):

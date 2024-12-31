@@ -1,4 +1,4 @@
-# config.py
+# configuration.py
 # DATA_DIR for mac should be 'my_datasets' and for windows '../my_datasets'
 ## Project PART 1
 # DATA_DIR = "../my_datasets"

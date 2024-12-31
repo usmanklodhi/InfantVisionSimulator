@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from torchvision import transforms
 from src.models import get_model
 from src.preprocessed_dataset import PreprocessedDataset
-from setting import NUM_CLASSES, DEVICE, BATCH_SIZE
+from configuration.setting import NUM_CLASSES, DEVICE, BATCH_SIZE
 
 # Function to calculate accuracy
 def calculate_accuracy(model, dataloader):
