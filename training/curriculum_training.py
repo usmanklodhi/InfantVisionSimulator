@@ -40,7 +40,7 @@ def train_and_save_model_curriculum(model,
     os.makedirs(model_output_dir, exist_ok=True)
     os.makedirs(loss_output_dir, exist_ok=True)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
     # Track overall losses across all stages
@@ -157,7 +157,7 @@ def train_curriculum(batch_size,
         model = get_model(model_name, num_classes=num_classes)
 
         # Define loss function, optimizer, scheduler
-        device = torch.device("cuda" if torch.cuda.is_available() else DEVICE)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         model = model.to(device)
 
         criterion = nn.CrossEntropyLoss()
