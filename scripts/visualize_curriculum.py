@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 from PIL import Image
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from transforms.color_perception import ColorPerceptionTransform
 from transforms.visual_acuity import VisualAcuityTransform
 
 # Load Tiny ImageNet dataset
-train_data = load_dataset("zh-plus/tiny-imagenet")['train']
+print("Loading Tiny ImageNet data... (from disk)")
+local_path = "./tiny-imagenet"
+train_data = load_from_disk(local_path)
+train_data = train_data['train']
 
 # Select a sample image from the dataset
 example_image = train_data[3]['image']  # Assuming the image is a PIL Image object

@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 from torchvision import transforms
 from src.models import get_model
 from src.preprocessed_dataset import PreprocessedDataset
-from configuration.setting import NUM_CLASSES, DEVICE, BATCH_SIZE
+from configuration.setting import NUM_CLASSES , BATCH_SIZE
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Function to calculate accuracy
 def calculate_accuracy(model, dataloader):
@@ -103,11 +105,15 @@ if __name__ == "__main__":
         "visual_acuity": "outputs/loss_logs/visual_acuity/"
     }
     output_dir = "output/plots/"
-    model_names = ["resnet18", "vgg16", "alexnet"]  # Add more models if needed
+    model_names = ["resnet18"]  # Add more models if needed
 
     # Dataset (replace with actual dataset)
-    from datasets import load_dataset
-    dataset = load_dataset("zh-plus/tiny-imagenet")["valid"]
+    from datasets import load_dataset, load_from_disk
+
+    print("Loading Tiny ImageNet data... (from disk)")
+    local_path = "./tiny-imagenet"
+    dataset = load_from_disk(local_path)
+    dataset = dataset["valid"]
 
     batch_size = BATCH_SIZE
 
