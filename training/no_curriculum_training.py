@@ -8,7 +8,7 @@ from src.dataloader import create_no_curriculum_dataloader
 from training.train import train_model
 from training.utils import plot_learning_curves
 from src.models import get_model
-from setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES, DEVICE
+from setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES, DEVICE, MODELS
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
@@ -55,7 +55,7 @@ def train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, mode
         model = model.to(device)
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
+        optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.95, weight_decay=1e-4)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_dataloader) * num_epochs)
 
         # Train and save model
@@ -72,7 +72,7 @@ def main():
     model_output_dir = "outputs/models/no_curriculum/"
     loss_output_dir = "outputs/loss_logs/no_curriculum/"
     #model_names = ["resnet18", "vgg16", "alexnet"]
-    model_names = [ "resnet18"]
+    model_names = MODELS
 
     train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, model_output_dir, loss_output_dir, model_names)
 

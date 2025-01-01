@@ -10,7 +10,7 @@ from transforms.color_perception import ColorPerceptionTransform
 # Define curriculum learning transformations
 def create_age_based_transform(age):
     return transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         VisualAcuityTransform(age),
         ColorPerceptionTransform(age),
         transforms.ToTensor()
@@ -42,7 +42,7 @@ def create_image_progression_dataloader(dataset, ages, batch_size):
 # Define a static transform for all images (no curriculum learning)
 def create_no_transform():
     return transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         transforms.ToTensor()
     ])
 
@@ -54,7 +54,7 @@ def create_no_curriculum_dataloader(dataset, batch_size):
 # Define separate transformations
 def create_acuity_transform(age):
     return transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         VisualAcuityTransform(age),
         transforms.ToTensor()
     ])
@@ -62,7 +62,7 @@ def create_acuity_transform(age):
 
 def create_color_transform(age):
     return transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         ColorPerceptionTransform(age),
         transforms.ToTensor()
     ])
