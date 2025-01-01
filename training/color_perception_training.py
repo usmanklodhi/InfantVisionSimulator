@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from src.preprocessed_dataset import PreprocessedDataset
 from src.dataloader import create_color_dataloader, create_no_transform
 from training.train import train_model
@@ -79,8 +79,11 @@ def main():
     model_names = ["resnet18", "vgg16", "alexnet"]
 
     # Load dataset
-    train_data = load_dataset("zh-plus/tiny-imagenet")['train']
-    val_data = load_dataset("zh-plus/tiny-imagenet")['valid']
+    print("Loading Tiny ImageNet data... (from disk)")
+    local_path = "./tiny-imagenet"
+    data = load_from_disk(local_path)
+    train_data = data['train']
+    val_data = data['valid']
 
     # Create DataLoaders for Color Perception Transform
     color_perception_dataloaders = create_color_dataloader(train_data, AGES, batch_size)

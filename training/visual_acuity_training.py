@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from src.preprocessed_dataset import PreprocessedDataset
 from src.dataloader import create_acuity_dataloader, create_no_transform
 from training.train import train_model
@@ -101,11 +101,15 @@ def main():
     num_classes = NUM_CLASSES
     model_output_dir = "outputs/models/visual_acuity/"
     loss_output_dir = "outputs/loss_logs/visual_acuity/"
-    model_names = ["resnet18", "vgg16", "alexnet"]
+    model_names = ["resnet18"]
+
 
     # Load dataset
-    train_data = load_dataset("zh-plus/tiny-imagenet")['train']
-    val_data = load_dataset("zh-plus/tiny-imagenet")['valid']
+    print("Loading Tiny ImageNet data... (from disk)")
+    local_path = "./tiny-imagenet"
+    data = load_from_disk(local_path)
+    train_data = data['train']
+    val_data = data['valid']
 
     # Create DataLoaders for Visual Acuity Transform
     visual_acuity_dataloaders = create_acuity_dataloader(train_data, AGES, batch_size)

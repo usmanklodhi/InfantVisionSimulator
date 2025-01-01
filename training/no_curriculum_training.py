@@ -3,7 +3,7 @@ import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from src.dataloader import create_no_curriculum_dataloader
 from training.train import train_model
 from training.utils import plot_learning_curves
@@ -12,7 +12,10 @@ from configuration.setting import EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
-    data = load_dataset("zh-plus/tiny-imagenet")
+    print("Loading Tiny ImageNet data... (from disk)")
+    local_path = "./tiny-imagenet"
+    data = load_from_disk(local_path)
+    # data = load_dataset("zh-plus/tiny-imagenet")
     return data[split]
 
 # 2. No Curriculum Training Function
