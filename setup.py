@@ -6,6 +6,8 @@ dependencies = [
     "Pillow",
     "matplotlib",
     "numpy",
+    "datasets",
+    "tensorboard"
 ]
 
 setup(

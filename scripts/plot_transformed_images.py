@@ -5,7 +5,11 @@ from torch.utils.data import DataLoader
 from src.dataset import InfantVisionDataset
 from transforms.visual_acuity import VisualAcuityTransform
 from transforms.color_perception import ColorPerceptionTransform
-from config import DATA_DIR, AGES, NUM_IMAGES, OUTPUT_DIR
+# from configuration.__init__ import DATA_DIR, AGES, OUTPUT_DIR
+
+import configuration
+print(configuration.__file__)  # Check which file is being imported
+print(dir(configuration))      # Check the attributes in the module
 
 
 def create_age_based_transform(age):
@@ -15,7 +19,6 @@ def create_age_based_transform(age):
         ColorPerceptionTransform(age),
         transforms.ToTensor()
     ])
-
 
 def save_transformed_images_grid(images, age, save_dir, grid_title="Transformed Images"):
     # Create output directory if not exists
@@ -47,7 +50,7 @@ def plot_transformed_images(data_dir, ages, save_dir):
         # Create transform for the current age
         transform = create_age_based_transform(age)
 
-        # Load dataset and dataloader
+        # Load my_datasets and dataloader
         dataset = InfantVisionDataset(data_dir, transform=transform)
         dataloader = DataLoader(dataset, batch_size=5, shuffle=False)  # Load 6 images per batch
 
@@ -57,10 +60,10 @@ def plot_transformed_images(data_dir, ages, save_dir):
         # Save the transformed images grid
         save_transformed_images_grid(images, age, save_dir)
 
-# Testing script: 5 images for each of the two properties, with at least 3 different parameter settings
-if __name__ == "__main__":
-    data_dir = DATA_DIR
-    ages = AGES
-    output_dir = OUTPUT_DIR
+# # Testing script: 5 images for each of the two properties, with at least 3 different parameter settings
+# if __name__ == "__main__":
+#     data_dir = DATA_DIR
+#     ages = AGES
+#     output_dir = OUTPUT_DIR
 
-    plot_transformed_images(data_dir, ages, output_dir)
+#     plot_transformed_images(data_dir, ages, output_dir)
