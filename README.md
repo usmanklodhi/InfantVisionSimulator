@@ -9,9 +9,10 @@ A simulation tool designed to model and analyze infant vision capabilities. This
 - Easy-to-use scripts and utilities for analysis.
 
 ## Repository Structure
+- `configuration/`: Hyperparameters for models' training.
 - `src/`: Core source code for the simulation models.
 - `scripts/`: Scripts for running simulations and analyses.
-- `dataset/`: Dataset files and loaders for vision data.
+- `my_datasets/`: Dataset files and loaders for vision data.
 - `transforms/`: Image transformation utilities.
 - `training/`: Curriculum learning-based approaches through different variants.
 
