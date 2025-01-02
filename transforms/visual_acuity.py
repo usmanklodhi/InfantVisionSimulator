@@ -13,7 +13,7 @@ class VisualAcuityTransform:
         # Update the decay formula to reflect 12 months timeline
         # Updated linear decay formula based on the 12-month timeline described in the paper
         if age_in_months <= 12:
-            self.blur_radius = max_blur - ((max_blur - min_blur) * (age_in_months / 12))
+            self.blur_radius = max_blur * math.exp(-age_in_months / 4)
         else:
             self.blur_radius = min_blur  # Beyond 12 months, perfect vision assumed
 

@@ -75,16 +75,22 @@ def main():
     # Directories
     model_dirs = {
         "no_curriculum": "outputs/models/no_curriculum/",
-        "curriculum": "outputs/models/curriculum/",
-        "color_perception": "outputs/models/color_perception/",
-        "visual_acuity": "outputs/models/visual_acuity/"
+        #"curriculum": "outputs/models/curriculum/",
+        "layerwise": "outputs/models/layerwise",
+        "layerwise_color": "outputs/models/layerwise_color",
+        "layerwise_acuity": "outputs/models/layerwise_acuity",
+        #"color_perception": "outputs/models/color_perception/",
+        #"visual_acuity": "outputs/models/visual_acuity/"
     }
 
     loss_dirs = {
         "no_curriculum": "outputs/loss_logs/no_curriculum/",
-        "curriculum": "outputs/loss_logs/curriculum/",
-        "color_perception": "outputs/loss_logs/color_perception/",
-        "visual_acuity": "outputs/loss_logs/visual_acuity/"
+        #"curriculum": "outputs/loss_logs/curriculum/",
+        "layerwise": "outputs/loss_logs/layerwise",
+        "layerwise_color": "outputs/loss_logs/layerwise_color",
+        "layerwise_acuity": "outputs/loss_logs/layerwise_acuity",
+        #"color_perception": "outputs/loss_logs/color_perception/",
+        #"visual_acuity": "outputs/loss_logs/visual_acuity/"
     }
 
     output_dir = "outputs/comparisons/"
