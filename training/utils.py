@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
+from datasets import load_dataset, load_from_disk
 import os
-import json
 
 
 def plot_learning_curves(train_losses, val_losses, stage_name):
@@ -17,40 +17,44 @@ def plot_learning_curves(train_losses, val_losses, stage_name):
     plt.legend()
     plt.savefig(f'{output_dir}/{stage_name}_learning_curves.png')
     plt.close()
-    
-def load_loss_logs(log_dir):
-    losses = {}
-    for file_name in os.listdir(log_dir):
-        if file_name.endswith(".json"):
-            with open(os.path.join(log_dir, file_name), "r") as f:
-                data = json.load(f)
-                losses[file_name.replace(".json", "")] = data
-    return losses
 
-def plot_comparative_losses(loss_logs, output_path):
-    output_dir = 'outputs/final_plot'
-    os.makedirs(output_dir, exist_ok=True)
-    
-    plt.figure(figsize=(12, 8))
-    for scenario, loss_data in loss_logs.items():
-        train_losses = loss_data["train_losses"]
-        val_losses = loss_data["val_losses"]
-        plt.plot(train_losses, label=f"{scenario} - Train")
-        plt.plot(val_losses, label=f"{scenario} - Validation")
-    
-    plt.xlabel("Epochs")
-    plt.ylabel("Loss")
-    plt.title("Learning Curves Comparison")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f'{output_dir}/learning_curves.png')
-    plt.close()
+def load_data(split="train"):
+    local_path = "./tiny-imagenet" # Change this to the path where the dataset is stored
+    data = load_from_disk(local_path)
+    return data[split]
 
-if __name__ == "__main__":
-    # Specify directories and output paths
-    loss_logs_dir = "loss_logs"
-    comparison_plot_path = "learning_curves_comparison.png"
-    
-    # Load loss logs and plot
-    loss_logs = load_loss_logs(loss_logs_dir)
-    plot_comparative_losses(loss_logs, comparison_plot_path)
+def download_data(split="train"):
+    data = load_dataset("zh-plus/tiny-imagenet")
+    return data[split]
+
+def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
+    """
+    Returns a dictionary that maps each age to a specific number of epochs.
+    If user_mapping is provided, use that directly (and check correctness).
+    Otherwise, split total_epochs equally across ages.
+    """
+    if user_mapping is not None:
+        # Validate sum
+        if sum(user_mapping.values()) != total_epochs:
+            raise ValueError(
+                "Sum of user-provided stage epochs != total_epochs. "
+                f"Sum = {sum(user_mapping.values())}, total_epochs = {total_epochs}"
+            )
+        # Validate that all ages in 'ages' are in user_mapping
+        for age in ages:
+            if age not in user_mapping:
+                raise ValueError(f"Missing stage epoch allocation for age {age}")
+        return user_mapping
+    else:
+        # Default: evenly split total_epochs among the ages
+        n_stages = len(ages)
+        base_epochs = total_epochs // n_stages
+        remainder = total_epochs % n_stages
+
+        stage_epoch_map = {}
+        for idx, age in enumerate(ages):
+            # Distribute any remainder (1 extra epoch) among the first 'remainder' stages
+            extra = 1 if idx < remainder else 0
+            stage_epoch_map[age] = base_epochs + extra
+
+        return stage_epoch_map
