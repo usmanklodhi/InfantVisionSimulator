@@ -166,7 +166,7 @@ def train_curriculum(batch_size,
 
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.SGD(model.parameters(), lr=learning_rate,
-                              momentum=0.9, weight_decay=1e-4)
+                              momentum=0.95, weight_decay=1e-4)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_epochs)
 
         # Create stage-epoch mapping (user or default)
@@ -201,7 +201,7 @@ def main():
     num_classes = NUM_CLASSES
     ages = AGES
     #model_names = ["resnet18", "vgg16", "alexnet"]
-    model_names = ["resnet18"]
+    model_names = MODELS
 
     # print batch size and total epochs
     print(f"Batch size: {batch_size}")

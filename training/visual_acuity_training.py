@@ -11,6 +11,10 @@ from training.utils import plot_learning_curves
 from src.models import get_model
 from configuration.setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
+# 1. Load Tiny ImageNet Data
+def load_tiny_imagenet_data(split="train"):
+    data = load_dataset("zh-plus/tiny-imagenet")
+    return data[split]
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
@@ -222,7 +226,6 @@ def main():
         ages=ages,
         user_epoch_map=user_epoch_map
     )
-
 
 if __name__ == "__main__":
     main()

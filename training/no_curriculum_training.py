@@ -58,7 +58,7 @@ def train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, mode
         model = model.to(device)
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
+        optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.95, weight_decay=1e-4)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_dataloader) * num_epochs)
 
         # Train and save model
@@ -75,7 +75,7 @@ def main():
     model_output_dir = "outputs/models/no_curriculum/"
     loss_output_dir = "outputs/loss_logs/no_curriculum/"
     #model_names = ["resnet18", "vgg16", "alexnet"]
-    model_names = [ "resnet18"]
+    model_names = MODELS
 
     train_no_curriculum(batch_size, num_epochs, learning_rate, num_classes, model_output_dir, loss_output_dir, model_names)
 

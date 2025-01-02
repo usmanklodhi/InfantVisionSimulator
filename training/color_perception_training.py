@@ -10,6 +10,10 @@ from training.utils import plot_learning_curves
 from src.models import get_model
 from configuration.setting import AGES, EPOCHS, BATCH_SIZE, LEARNING_RATE, NUM_CLASSES
 
+# 1. Load Tiny ImageNet Data
+def load_tiny_imagenet_data(split="train"):
+    data = load_dataset("zh-plus/tiny-imagenet")
+    return data[split]
 
 # 1. Load Tiny ImageNet Data
 def load_tiny_imagenet_data(split="train"):
@@ -88,7 +92,6 @@ def train_and_save_color_perception_model(model,
     plot_learning_curves(overall_train_losses, overall_val_losses, final_stage_name)
 
     return overall_train_losses, overall_val_losses
-
 
 # 3. Helper Function: Create a default or custom stage-to-epoch mapping
 def create_stage_epoch_mapping(ages, total_epochs, user_mapping=None):
@@ -223,6 +226,6 @@ def main():
         user_epoch_map=user_epoch_map
     )
 
-
 if __name__ == "__main__":
     main()
+
