@@ -24,21 +24,6 @@ def create_curriculum_dataloaders(dataset, ages, batch_size):
         dataloaders[age] = DataLoader(preprocessed_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
     return dataloaders
 
-# def create_image_progression_dataloader(dataset, ages, batch_size):
-#     """
-#     Create a DataLoader where each image is transformed for all ages sequentially.
-#     """
-#     transformed_dataset = []
-#
-#     for image, label in dataset:
-#         for age in ages:
-#             # Apply age-specific transformations to the same image
-#             transform = create_age_based_transform(age)
-#             transformed_image = transform(image)
-#             transformed_dataset.append((transformed_image, label))
-#
-#     return DataLoader(transformed_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-
 # Define a static transform for all images (no curriculum learning)
 def create_no_transform():
     return transforms.Compose([
